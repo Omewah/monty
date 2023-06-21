@@ -1,6 +1,8 @@
 #ifndef MONTY_H
 #define MONTY_H
 
+#define _POSIX_C_SOURCE 200809L
+
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -19,9 +21,9 @@
  */
 typedef struct stack_s
 {
-        int n;
-        struct stack_s *prev;
-        struct stack_s *next;
+	int n;
+	struct stack_s *prev;
+	struct stack_s *next;
 } stack_t;
 
 /**
@@ -33,28 +35,47 @@ typedef struct stack_s
  */
 typedef struct instruction_s
 {
-        char *opcode;
-        void (*f)(stack_t **stack, unsigned int line_number);
+	char *opcode;
+	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
 /**
  * struct mont_s - a struct containing arguments
- * @stargvIN: the value for the struct argument
- * @mfile: the pointer address to the monty file location
+ * @stargvIN: the array of strings for the struct argument
+ * @mfile: the filename address of the monty program
  * @linecont: the line input string
  * @flagIN: a counter for the stack changes
  * Description: iterates values through out the monty variables
  */
 typedef struct mont_s
 {
-        char *stargvIN;
-        FILE *mfile;
-        char *linecont;
-        int flagIN;
+	char *stargvIN;
+	FILE *mfile;
+	char *linecont;
+	int flagIN;
 } mont_t;
 
-void push_pfuncs(stack_t **h, unsigned int n);
-void pall_pfuncs(stack_t **h, unsigned int n);
+void memfree_pfuncs(stack_t *h);
+void push_pfuncs(stack_t **h, unsigned int num);
+void pall_pfuncs(stack_t **h, unsigned int num);
+void pint_pfuncs(stack_t **h, unsigned int num);
+void pop_pfuncs(stack_t **h, unsigned int num);
+void swap_pfuncs(stack_t **h, unsigned int num);
+void add_pfuncs(stack_t **h, unsigned int num);
+void nop_pfuncs(stack_t **h, unsigned int num);
+void sub_pfuncs(stack_t **h, unsigned int num);
+void div_pfuncs(stack_t **h, unsigned int num);
+void mul_pfuncs(stack_t **h, unsigned int num);
+void mod_pfuncs(stack_t **h, unsigned int num);
+void pchar_pfuncs(stack_t **h, unsigned int num);
+void pstr_pfuncs(stack_t **h, unsigned int num);
+void rotl_pfuncs(stack_t **h, __attribute__((unused)) unsigned int num);
+void rotr_pfuncs(stack_t **h, __attribute__((unused)) unsigned int num);
+void stack_pfuncs(stack_t **h, unsigned int num);
+void queue_pfuncs(stack_t **h, unsigned int num);
+void addqueue_pfuncs(stack_t **h, int new);
+void addelem_pfuncs(stack_t **h, int new);
+int execmd(char *linecont, stack_t **st, unsigned int num, FILE *mfile);
 
 extern mont_t mont;
 
